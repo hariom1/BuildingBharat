@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block title %}Political Consulting Courses - Building Bharat{% endblock %}
+
+{% block extra_head %}
+<style>
+    .course-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .course-img-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .course-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .course-card:hover .course-img {
+        transform: scale(1.05);
+    }
+    
+    .course-price {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: var(--bb-deep-blue);
+        color: white;
+        padding: 5px 15px;
+        font-weight: 600;
+        border-radius: 8px 0 0 0;
+    }
+    
+    .course-level {
+        display: inline-block;
+        padding: 3px 8px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    
+    .level-beginner {
+        background-color: #e3f2fd;
+        color: #0d47a1;
+    }
+    
+    .level-intermediate {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+    }
+    
+    .level-advanced {
+        background-color: #fff3e0;
+        color: #e65100;
+    }
+    
+    .category-header {
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .category-header:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: var(--bb-saffron);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Courses Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="mb-4">Political Consulting Courses</h1>
+                <p class="lead mb-0">Enhance your political consulting skills with our specialized courses</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title text-center">Master Political Consulting</h2>
+                <p class="lead">Building Bharat offers comprehensive courses in various political consulting disciplines, from field operations to data analytics. Each course is designed by industry experts to provide you with practical skills and knowledge you can apply immediately.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Course Categories -->
+<section class="section section-highlight">
+    <div class="container">
+        {% for category, category_courses in categories.items() %}
+        <div class="mb-5">
+            <h2 class="category-header">{{ category }}</h2>
+            <div class="row">
+                {% for course_id in category_courses %}
+                {% set course = courses[course_id] %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card course-card">
+                        <div class="course-img-container">
+                            <img src="{{ url_for('static', filename='images/' + course.image) }}" alt="{{ course.title }}" class="course-img">
+                            <div class="course-price">₹{{ "{:,}".format(course.price) }}</div>
+                        </div>
+                        <div class="card-body">
+                            {% if course.level == 'Beginner' %}
+                            <span class="course-level level-beginner">Beginner</span>
+                            {% elif course.level == 'Intermediate' %}
+                            <span class="course-level level-intermediate">Intermediate</span>
+                            {% elif course.level == 'Advanced' %}
+                            <span class="course-level level-advanced">Advanced</span>
+                            {% elif 'Beginner to Intermediate' in course.level %}
+                            <span class="course-level level-beginner">Beginner to Intermediate</span>
+                            {% elif 'Intermediate to Advanced' in course.level %}
+                            <span class="course-level level-intermediate">Intermediate to Advanced</span>
+                            {% endif %}
+                            
+                            <h3 class="h5">{{ course.title }}</h3>
+                            <p class="text-muted mb-3"><i class="fas fa-user-tie me-2"></i>{{ course.instructor }}</p>
+                            <p class="text-muted mb-3"><i class="fas fa-clock me-2"></i>{{ course.duration }}</p>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-primary">View Details</a>
+                                <a href="{{ url_for('add_to_cart', course_id=course.id) }}" class="btn btn-primary"><i class="fas fa-shopping-cart me-2"></i>Enroll</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Why Take Our Courses -->
+<section class="section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="section-title">Why Take Our Courses?</h2>
+                <div class="d-flex mb-4">
+                    <div class="me-3">
+                        <div class="bg-deep-blue text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-award"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="h4">Expert Instructors</h3>
+                        <p>Learn from experienced political consultants and campaign professionals with proven track records.</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-4">
+                    <div class="me-3">
+                        <div class="bg-deep-blue text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="h4">Practical Learning</h3>
+                        <p>Hands-on assignments, case studies, and real-world examples that you can apply immediately.</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="me-3">
+                        <div class="bg-deep-blue text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="h4">Community Access</h3>
+                        <p>Join a community of like-minded political professionals for networking and collaboration.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Student Success Stories</h3>
+                        <div class="testimonial mb-4">
+                            <p class="testimonial-quote">"The Political Data Analytics course transformed my approach to campaign strategy. I now have the skills to make data-driven decisions that have a real impact on our outreach effectiveness."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="feature-icon me-3">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div>
+                                    <p class="testimonial-author mb-0">Amit Kumar</p>
+                                    <p class="text-muted mb-0">Campaign Manager, Delhi</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <p class="testimonial-quote">"The Digital Communication course gave me practical skills I could immediately apply to our party's social media strategy. Our engagement metrics have doubled since implementing what I learned."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="feature-icon me-3">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div>
+                                    <p class="testimonial-author mb-0">Priya Desai</p>
+                                    <p class="text-muted mb-0">Digital Strategist, Mumbai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-4">Ready to Advance Your Political Consulting Skills?</h2>
+                <p class="lead mb-4">Enroll in our specialized courses today and take your political career to the next level.</p>
+                <a href="#" class="btn btn-light btn-lg" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Browse Courses</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation to course cards when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}

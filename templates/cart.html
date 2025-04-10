@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Cart - Building Bharat{% endblock %}
+
+{% block extra_head %}
+<style>
+    .cart-item {
+        border-bottom: 1px solid #e9ecef;
+        padding: 20px 0;
+    }
+    
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+    
+    .cart-img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .cart-summary {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    .cart-total {
+        font-size: 1.5rem;
+        color: var(--bb-deep-blue);
+    }
+    
+    .empty-cart {
+        text-align: center;
+        padding: 50px 20px;
+    }
+    
+    .empty-cart-icon {
+        font-size: 5rem;
+        color: #e9ecef;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Cart Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="mb-4">Your Cart</h1>
+                <p class="lead mb-0">Review your selected courses before checkout</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cart Content -->
+<section class="section">
+    <div class="container">
+        {% if cart_items %}
+        <div class="row">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="h4 mb-4">Cart Items ({{ cart_items|length }})</h2>
+                        
+                        {% for course in cart_items %}
+                        <div class="cart-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 col-sm-3 mb-3 mb-md-0">
+                                    <img src="{{ url_for('static', filename='images/' + course.image) }}" alt="{{ course.title }}" class="cart-img">
+                                </div>
+                                <div class="col-md-6 col-sm-9 mb-3 mb-md-0">
+                                    <h3 class="h5 mb-1">{{ course.title }}</h3>
+                                    <p class="text-muted mb-1"><i class="fas fa-user-tie me-2"></i>{{ course.instructor }}</p>
+                                    <p class="text-muted mb-0"><i class="fas fa-clock me-2"></i>{{ course.duration }}</p>
+                                </div>
+                                <div class="col-md-2 col-6 text-md-end mb-2 mb-md-0">
+                                    <p class="h5 mb-0">₹{{ "{:,}".format(course.price) }}</p>
+                                </div>
+                                <div class="col-md-2 col-6 text-end">
+                                    <a href="{{ url_for('remove_from_cart', course_id=course.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove this course from your cart?');">
+                                        <i class="fas fa-trash me-1"></i> Remove
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('courses_page') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body cart-summary">
+                        <h2 class="h4 mb-4">Order Summary</h2>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>₹{{ "{:,}".format(total) }}</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>GST (18%):</span>
+                            <span>₹{{ "{:,}".format(total * 0.18) }}</span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="fw-bold">Total:</span>
+                            <span class="cart-total fw-bold">₹{{ "{:,}".format(total * 1.18) }}</span>
+                        </div>
+                        
+                        <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-lg w-100">
+                            Proceed to Checkout
+                        </a>
+                        
+                        <div class="text-center mt-3">
+                            <p class="text-muted small mb-0">
+                                <i class="fas fa-lock me-1"></i> Secure Checkout
+                            </p>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h3 class="h5 mb-3">Have a Coupon?</h3>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter code">
+                            <button class="btn btn-outline-primary" type="button">Apply</button>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h3 class="h5 mb-3">We Accept</h3>
+                        <div class="d-flex justify-content-between">
+                            <i class="fab fa-cc-visa fa-2x text-muted"></i>
+                            <i class="fab fa-cc-mastercard fa-2x text-muted"></i>
+                            <i class="fab fa-cc-amex fa-2x text-muted"></i>
+                            <i class="fab fa-cc-paypal fa-2x text-muted"></i>
+                            <i class="fas fa-wallet fa-2x text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3">Need Help?</h3>
+                        <p class="small mb-0">
+                            <i class="fas fa-envelope me-2"></i> Email: <a href="mailto:support@buildingbharat.org">support@buildingbharat.org</a>
+                        </p>
+                        <p class="small mb-0">
+                            <i class="fas fa-phone me-2"></i> Call: +91 9876543210
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h2 class="h3 mb-4">Your Cart is Empty</h2>
+            <p class="mb-4">Looks like you haven't added any courses to your cart yet.</p>
+            <a href="{{ url_for('courses_page') }}" class="btn btn-primary btn-lg">
+                Browse Courses
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% if cart_items %}
+<!-- You May Also Like -->
+<section class="section section-highlight">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">You May Also Like</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="h4">Building Bharat Fellowship</h3>
+                        <p class="mb-4">A year-long program for exceptional political talent with mentorship and field placements.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3 class="h4">1-on-1 Mentorship</h3>
+                        <p class="mb-4">Get personalized guidance from experienced political consultants for your campaign.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3 class="h4">Political Consulting Certificate</h3>
+                        <p class="mb-4">Comprehensive certification program covering all aspects of political consulting.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

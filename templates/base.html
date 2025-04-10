@@ -51,6 +51,17 @@
                         <a class="nav-link" href="{{ url_for('future_goals') }}">Future Goals</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('courses_page') }}">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cart') }}">
+                            <i class="fas fa-shopping-cart"></i>
+                            {% if session.get('cart') %}
+                            <span class="badge bg-danger rounded-pill">{{ session.get('cart')|length }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary text-white ms-lg-2 px-4" href="{{ url_for('contact') }}">Join Us</a>
                     </li>
                 </ul>
@@ -97,6 +108,7 @@
                         <li><a href="{{ url_for('home') }}">Home</a></li>
                         <li><a href="{{ url_for('vision') }}">Our Vision</a></li>
                         <li><a href="{{ url_for('what_we_do') }}">What We Do</a></li>
+                        <li><a href="{{ url_for('courses_page') }}">Courses</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
                     </ul>
                 </div>

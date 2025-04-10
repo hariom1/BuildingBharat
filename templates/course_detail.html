@@ -1,0 +1,456 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - Building Bharat{% endblock %}
+
+{% block extra_head %}
+<style>
+    .course-header {
+        background: linear-gradient(135deg, var(--bb-deep-blue) 0%, #1a3a5f 100%);
+        padding: 60px 0;
+        color: white;
+    }
+    
+    .course-img {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .course-info-box {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        padding: 25px;
+        position: sticky;
+        top: 100px;
+    }
+    
+    .course-level {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    
+    .level-beginner {
+        background-color: #e3f2fd;
+        color: #0d47a1;
+    }
+    
+    .level-intermediate {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+    }
+    
+    .level-advanced {
+        background-color: #fff3e0;
+        color: #e65100;
+    }
+    
+    .topic-item {
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .topic-icon {
+        color: var(--bb-saffron);
+        margin-right: 15px;
+        font-size: 1.5rem;
+    }
+    
+    .learning-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .learning-icon {
+        color: var(--bb-deep-blue);
+        margin-right: 15px;
+    }
+    
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .video-container iframe,
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
+    .play-demo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.8);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+    }
+    
+    .play-demo:hover {
+        background-color: white;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    
+    .play-demo i {
+        color: var(--bb-saffron);
+        font-size: 2rem;
+    }
+    
+    .section-divider {
+        height: 1px;
+        background-color: #e9ecef;
+        margin: 40px 0;
+    }
+    
+    .instructor-bio {
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    
+    .instructor-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Course Header -->
+<section class="course-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                {% if course.level == 'Beginner' %}
+                <span class="course-level level-beginner">Beginner</span>
+                {% elif course.level == 'Intermediate' %}
+                <span class="course-level level-intermediate">Intermediate</span>
+                {% elif course.level == 'Advanced' %}
+                <span class="course-level level-advanced">Advanced</span>
+                {% elif 'Beginner to Intermediate' in course.level %}
+                <span class="course-level level-beginner">Beginner to Intermediate</span>
+                {% elif 'Intermediate to Advanced' in course.level %}
+                <span class="course-level level-intermediate">Intermediate to Advanced</span>
+                {% endif %}
+                <h1 class="mb-3">{{ course.title }}</h1>
+                <p class="lead mb-4">{{ course.description }}</p>
+                <div class="d-flex flex-wrap">
+                    <div class="me-4 mb-3">
+                        <small class="text-white-50">Instructor</small>
+                        <p class="mb-0"><i class="fas fa-user-tie me-2"></i>{{ course.instructor }}</p>
+                    </div>
+                    <div class="me-4 mb-3">
+                        <small class="text-white-50">Duration</small>
+                        <p class="mb-0"><i class="fas fa-clock me-2"></i>{{ course.duration }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-white-50">Category</small>
+                        <p class="mb-0"><i class="fas fa-tag me-2"></i>{{ course.category }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="text-center" style="font-size: 8rem; color: rgba(255, 255, 255, 0.1);">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Course Content -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Demo Video -->
+                <h2 class="mb-4">Course Preview</h2>
+                <div class="video-container" id="videoContainer">
+                    <img src="{{ url_for('static', filename='images/' + course.image) }}" alt="{{ course.title }}" class="img-fluid w-100">
+                    <div class="play-demo" id="playDemo">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <!-- Video would be loaded here when play button is clicked -->
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <!-- What You'll Learn -->
+                <h2 class="mb-4">What You'll Learn</h2>
+                <div class="row">
+                    {% for item in course.what_you_learn %}
+                    <div class="col-md-6">
+                        <div class="learning-item">
+                            <div class="learning-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p class="mb-0">{{ item }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <!-- Course Content -->
+                <h2 class="mb-4">Course Content</h2>
+                <div class="accordion" id="courseTopics">
+                    {% for topic in course.topics %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ loop.index }}">
+                            <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="collapse{{ loop.index }}">
+                                <i class="fas fa-book me-2 text-saffron"></i> {{ topic }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#courseTopics">
+                            <div class="accordion-body">
+                                <p><strong>Module {{ loop.index }}:</strong> {{ topic }}</p>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-video me-2 text-muted"></i> Video Lectures</li>
+                                    <li class="mb-2"><i class="fas fa-file-alt me-2 text-muted"></i> Reading Materials</li>
+                                    <li class="mb-2"><i class="fas fa-tasks me-2 text-muted"></i> Practical Assignments</li>
+                                    <li><i class="fas fa-question-circle me-2 text-muted"></i> Quizzes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <!-- Instructor -->
+                <h2 class="mb-4">Meet Your Instructor</h2>
+                <div class="instructor-bio">
+                    <img src="{{ url_for('static', filename='images/instructor-placeholder.jpg') }}" alt="{{ course.instructor }}" class="instructor-img">
+                    <div>
+                        <h3 class="h4 mb-2">{{ course.instructor }}</h3>
+                        <p class="text-muted mb-3">Expert in {{ course.category }}</p>
+                        <p class="mb-0">An experienced political consultant with extensive field experience in Indian political campaigns. Specializes in {{ course.category.lower() }} and has worked with major political parties across multiple states.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQs -->
+                <h2 class="mb-4">Frequently Asked Questions</h2>
+                <div class="accordion" id="courseFaqs">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+                                How long will I have access to this course?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faqHeading1" data-bs-parent="#courseFaqs">
+                            <div class="accordion-body">
+                                Once enrolled, you will have lifetime access to the course materials, including all future updates.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                                Is there any certification upon completion?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#courseFaqs">
+                            <div class="accordion-body">
+                                Yes, after completing all modules and assignments, you'll receive a Building Bharat certification that can be shared on your LinkedIn profile and resume.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                                What if I'm not satisfied with the course?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#courseFaqs">
+                            <div class="accordion-body">
+                                We offer a 7-day money-back guarantee. If you're not satisfied with the course, you can request a full refund within 7 days of purchase.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+                                Do I need any specific software or equipment?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#courseFaqs">
+                            <div class="accordion-body">
+                                Basic computer skills and internet access are required. Some courses may recommend specific software, but free alternatives are always provided when possible.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mt-5 mt-lg-0">
+                <div class="course-info-box">
+                    <div class="text-center mb-4">
+                        <h3 class="h2 text-deep-blue mb-0">₹{{ "{:,}".format(course.price) }}</h3>
+                    </div>
+                    <ul class="list-unstyled mb-4">
+                        <li class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-video me-2"></i> Video Lectures</span>
+                            <span><i class="fas fa-check text-success"></i></span>
+                        </li>
+                        <li class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-file-alt me-2"></i> Course Materials</span>
+                            <span><i class="fas fa-check text-success"></i></span>
+                        </li>
+                        <li class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-infinity me-2"></i> Lifetime Access</span>
+                            <span><i class="fas fa-check text-success"></i></span>
+                        </li>
+                        <li class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-certificate me-2"></i> Completion Certificate</span>
+                            <span><i class="fas fa-check text-success"></i></span>
+                        </li>
+                        <li class="d-flex justify-content-between">
+                            <span><i class="fas fa-users me-2"></i> Community Access</span>
+                            <span><i class="fas fa-check text-success"></i></span>
+                        </li>
+                    </ul>
+                    <a href="{{ url_for('add_to_cart', course_id=course.id) }}" class="btn btn-primary btn-lg w-100 mb-3">Enroll Now</a>
+                    <p class="text-center text-muted small mb-0">Secure payment via credit/debit cards</p>
+                    
+                    <hr class="my-4">
+                    
+                    <h4 class="h5 mb-3">This Course Includes:</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-play-circle me-2 text-saffron"></i> {{ course.duration }} of video content</li>
+                        <li class="mb-2"><i class="fas fa-download me-2 text-saffron"></i> Downloadable resources</li>
+                        <li class="mb-2"><i class="fas fa-tasks me-2 text-saffron"></i> Practical assignments</li>
+                        <li class="mb-2"><i class="fas fa-comments me-2 text-saffron"></i> Discussion forums</li>
+                        <li><i class="fas fa-mobile-alt me-2 text-saffron"></i> Mobile and TV access</li>
+                    </ul>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="d-flex justify-content-center">
+                        <div class="text-center">
+                            <p class="mb-2"><i class="fas fa-shield-alt text-saffron"></i></p>
+                            <p class="small mb-0">7-Day Money-Back Guarantee</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Courses -->
+<section class="section section-highlight">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">You May Also Like</h2>
+        <div class="row">
+            <!-- We'd dynamically show related courses here -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    <div class="course-img-container">
+                        <img src="{{ url_for('static', filename='images/related-course-1.jpg') }}" alt="Related Course" class="course-img">
+                        <div class="course-price">₹5,999</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="course-level level-intermediate">Intermediate</span>
+                        <h3 class="h5">Campaign Messaging Masterclass</h3>
+                        <p class="text-muted mb-3"><i class="fas fa-user-tie me-2"></i>Meera Joshi</p>
+                        <p class="text-muted mb-3"><i class="fas fa-clock me-2"></i>8 hours</p>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="#" class="btn btn-outline-primary">View Details</a>
+                            <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart me-2"></i>Enroll</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    <div class="course-img-container">
+                        <img src="{{ url_for('static', filename='images/related-course-2.jpg') }}" alt="Related Course" class="course-img">
+                        <div class="course-price">₹7,499</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="course-level level-beginner">Beginner</span>
+                        <h3 class="h5">Political Communication Fundamentals</h3>
+                        <p class="text-muted mb-3"><i class="fas fa-user-tie me-2"></i>Aryan Singh</p>
+                        <p class="text-muted mb-3"><i class="fas fa-clock me-2"></i>10 hours</p>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="#" class="btn btn-outline-primary">View Details</a>
+                            <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart me-2"></i>Enroll</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    <div class="course-img-container">
+                        <img src="{{ url_for('static', filename='images/related-course-3.jpg') }}" alt="Related Course" class="course-img">
+                        <div class="course-price">₹8,999</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="course-level level-advanced">Advanced</span>
+                        <h3 class="h5">Political Leadership Essentials</h3>
+                        <p class="text-muted mb-3"><i class="fas fa-user-tie me-2"></i>Dr. Rajiv Kumar</p>
+                        <p class="text-muted mb-3"><i class="fas fa-clock me-2"></i>15 hours</p>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="#" class="btn btn-outline-primary">View Details</a>
+                            <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart me-2"></i>Enroll</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const playDemo = document.getElementById('playDemo');
+        const videoContainer = document.getElementById('videoContainer');
+        
+        // Placeholder for demo video functionality
+        // In a real application, this would load the actual video player
+        playDemo.addEventListener('click', function() {
+            // Remove the image and play button
+            videoContainer.innerHTML = `
+                <video controls autoplay class="course-preview-video">
+                    <source src="{{ url_for('static', filename='videos/' + course.demo_video) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            `;
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - Building Bharat{% endblock %}
+
+{% block extra_head %}
+<style>
+    .checkout-section {
+        padding: 60px 0;
+    }
+    
+    .checkout-summary {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    .checkout-total {
+        font-size: 1.5rem;
+        color: var(--bb-deep-blue);
+    }
+    
+    .cart-item-mini {
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .cart-item-mini:last-child {
+        border-bottom: none;
+    }
+    
+    .payment-options label {
+        padding: 15px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+    
+    .payment-options label:hover {
+        border-color: var(--bb-saffron);
+    }
+    
+    .payment-options input[type="radio"]:checked + label {
+        border-color: var(--bb-saffron);
+        background-color: #fff9f1;
+    }
+    
+    .payment-icon {
+        margin-right: 15px;
+        font-size: 1.5rem;
+    }
+    
+    .form-floating > label {
+        padding-left: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="checkout-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="h2 mb-4">Checkout</h1>
+                
+                <form action="{{ url_for('create_checkout_session') }}" method="POST">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="h4 mb-4">Personal Information</h2>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                                        <label for="firstName">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                                        <label for="lastName">Last Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                        <label for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control" id="phone" placeholder="Phone" required>
+                                        <label for="phone">Phone</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="h4 mb-4">Payment Method</h2>
+                            
+                            <div class="payment-options">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input visually-hidden" type="radio" name="paymentMethod" id="creditCard" value="creditCard" checked>
+                                    <label class="form-check-label w-100" for="creditCard">
+                                        <span class="payment-icon text-primary"><i class="fas fa-credit-card"></i></span>
+                                        <span>Credit / Debit Card</span>
+                                    </label>
+                                </div>
+                                
+                                <div id="creditCardFields" class="mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="cardNumber" placeholder="Card Number" required>
+                                                <label for="cardNumber">Card Number</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                                                <label for="expiryDate">Expiry Date (MM/YY)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
+                                                <label for="cvv">CVV</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="nameOnCard" placeholder="Name on Card" required>
+                                                <label for="nameOnCard">Name on Card</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input visually-hidden" type="radio" name="paymentMethod" id="upi" value="upi">
+                                    <label class="form-check-label w-100" for="upi">
+                                        <span class="payment-icon text-success"><i class="fas fa-mobile-alt"></i></span>
+                                        <span>UPI / Mobile Wallets</span>
+                                    </label>
+                                </div>
+                                
+                                <div id="upiFields" class="mb-4 d-none">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="upiId" placeholder="UPI ID">
+                                        <label for="upiId">UPI ID (e.g., name@upi)</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input visually-hidden" type="radio" name="paymentMethod" id="netbanking" value="netbanking">
+                                    <label class="form-check-label w-100" for="netbanking">
+                                        <span class="payment-icon text-info"><i class="fas fa-university"></i></span>
+                                        <span>Net Banking</span>
+                                    </label>
+                                </div>
+                                
+                                <div id="netbankingFields" class="mb-4 d-none">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="bankSelect">
+                                            <option selected disabled>Select your bank</option>
+                                            <option>State Bank of India</option>
+                                            <option>HDFC Bank</option>
+                                            <option>ICICI Bank</option>
+                                            <option>Axis Bank</option>
+                                            <option>Punjab National Bank</option>
+                                            <option>Bank of Baroda</option>
+                                            <option>Other</option>
+                                        </select>
+                                        <label for="bankSelect">Select Bank</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="h4 mb-4">Billing Information</h2>
+                            
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="address" placeholder="Address" required>
+                                        <label for="address">Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="city" placeholder="City" required>
+                                        <label for="city">City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="pincode" placeholder="PIN Code" required>
+                                        <label for="pincode">PIN Code</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="state" required>
+                                            <option selected disabled>Select State</option>
+                                            <option>Andhra Pradesh</option>
+                                            <option>Bihar</option>
+                                            <option>Delhi</option>
+                                            <option>Gujarat</option>
+                                            <option>Karnataka</option>
+                                            <option>Maharashtra</option>
+                                            <option>Tamil Nadu</option>
+                                            <option>Uttar Pradesh</option>
+                                            <option>West Bengal</option>
+                                            <!-- Add more states as needed -->
+                                        </select>
+                                        <label for="state">State</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="country" placeholder="Country" value="India" readonly>
+                                        <label for="country">Country</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="gstin" placeholder="GSTIN (Optional)">
+                                        <label for="gstin">GSTIN (Optional)</label>
+                                        <div class="form-text">Enter GSTIN if you need a GST invoice</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the <a href="#" class="text-decoration-none">Terms and Conditions</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                Complete Purchase - ₹{{ "{:,}".format(total * 1.18) }}
+                            </button>
+                            
+                            <p class="text-center mt-3 text-muted">
+                                <i class="fas fa-lock me-2"></i> Your information is secure and encrypted
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body checkout-summary">
+                        <h2 class="h4 mb-4">Order Summary</h2>
+                        
+                        <div class="cart-items-mini mb-4">
+                            {% for course in cart_items %}
+                            <div class="cart-item-mini">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h3 class="h6 mb-1">{{ course.title }}</h3>
+                                        <p class="text-muted small mb-0">{{ course.instructor }}</p>
+                                    </div>
+                                    <p class="mb-0">₹{{ "{:,}".format(course.price) }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>₹{{ "{:,}".format(total) }}</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>GST (18%):</span>
+                            <span>₹{{ "{:,}".format(total * 0.18) }}</span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="fw-bold">Total:</span>
+                            <span class="checkout-total fw-bold">₹{{ "{:,}".format(total * 1.18) }}</span>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Coupon Code">
+                            <button class="btn btn-outline-primary" type="button">Apply</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3">Secure Checkout</h3>
+                        <p class="small mb-3">
+                            <i class="fas fa-lock me-2"></i> Your payment information is processed securely. We do not store credit card details nor have access to your credit card information.
+                        </p>
+                        <div class="d-flex justify-content-between mt-4">
+                            <i class="fab fa-cc-visa fa-2x text-muted"></i>
+                            <i class="fab fa-cc-mastercard fa-2x text-muted"></i>
+                            <i class="fab fa-cc-amex fa-2x text-muted"></i>
+                            <i class="fab fa-cc-paypal fa-2x text-muted"></i>
+                            <i class="fas fa-wallet fa-2x text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3">Need Help?</h3>
+                        <p class="small mb-0">
+                            <i class="fas fa-envelope me-2"></i> Email: <a href="mailto:support@buildingbharat.org">support@buildingbharat.org</a>
+                        </p>
+                        <p class="small mb-0">
+                            <i class="fas fa-phone me-2"></i> Call: +91 9876543210
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Payment method toggle
+        const creditCardOption = document.getElementById('creditCard');
+        const upiOption = document.getElementById('upi');
+        const netbankingOption = document.getElementById('netbanking');
+        
+        const creditCardFields = document.getElementById('creditCardFields');
+        const upiFields = document.getElementById('upiFields');
+        const netbankingFields = document.getElementById('netbankingFields');
+        
+        creditCardOption.addEventListener('change', function() {
+            if (this.checked) {
+                creditCardFields.classList.remove('d-none');
+                upiFields.classList.add('d-none');
+                netbankingFields.classList.add('d-none');
+            }
+        });
+        
+        upiOption.addEventListener('change', function() {
+            if (this.checked) {
+                creditCardFields.classList.add('d-none');
+                upiFields.classList.remove('d-none');
+                netbankingFields.classList.add('d-none');
+            }
+        });
+        
+        netbankingOption.addEventListener('change', function() {
+            if (this.checked) {
+                creditCardFields.classList.add('d-none');
+                upiFields.classList.add('d-none');
+                netbankingFields.classList.remove('d-none');
+            }
+        });
+        
+        // Form validation would go here in a real application
+    });
+</script>
+{% endblock %}
