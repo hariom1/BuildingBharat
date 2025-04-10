@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <rect width="800" height="400" fill="#0F2A47"/>
+  
+  <!-- Silhouette of Indira Gandhi -->
+  <g fill="#FFFFFF" opacity="0.8">
+    <!-- Stylized head and face -->
+    <ellipse cx="400" cy="150" rx="75" ry="85"/>
+    <rect x="375" y="210" width="50" height="90" rx="10"/>
+    
+    <!-- Distinctive hairstyle with white streak -->
+    <path d="M 340 110 Q 400 60 460 110" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M 385 85 Q 395 65 405 85" fill="#0F2A47" stroke="#0F2A47" stroke-width="1"/>
+  </g>
+  
+  <!-- Indian flag colors as decorative elements -->
+  <rect x="150" y="320" width="150" height="10" fill="#FF9933"/>
+  <rect x="325" y="320" width="150" height="10" fill="#FFFFFF"/>
+  <rect x="500" y="320" width="150" height="10" fill="#138808"/>
+  
+  <!-- Quote -->
+  <text x="400" y="350" font-family="Arial" font-size="20" fill="#FFFFFF" text-anchor="middle" font-style="italic">"The power to question is the basis of all human progress."</text>
+  
+  <!-- Name -->
+  <text x="400" y="280" font-family="Arial" font-size="24" fill="#FFFFFF" text-anchor="middle" font-weight="bold">Indira Gandhi</text>
+  <text x="400" y="310" font-family="Arial" font-size="18" fill="#FFFFFF" text-anchor="middle">Former Prime Minister of India</text>
+</svg>
