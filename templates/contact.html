@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - Building Bharat{% endblock %}
+
+{% block content %}
+<!-- Contact Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="mb-4">Join Us</h1>
+                <p class="lead mb-0">Become part of the movement to transform Indian politics through youth leadership</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title text-center">Get in Touch</h2>
+                <p class="lead mb-5">Interested in our programs, partnerships, or have questions about Building Bharat? We'd love to hear from you.</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="card contact-form">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Request Information</h3>
+                        <form id="contactForm" action="{{ url_for('contact') }}" method="POST" class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <div class="invalid-feedback">
+                                    Please provide your name.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email address.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="organization" class="form-label">Organization/Institution</label>
+                                <input type="text" class="form-control" id="organization" name="organization">
+                            </div>
+                            <div class="mb-3">
+                                <label for="interests" class="form-label">Areas of Interest</label>
+                                <select class="form-select" id="interests" name="interests">
+                                    <option value="" selected>Select your primary interest</option>
+                                    <option value="Leadership Development">Leadership Development</option>
+                                    <option value="Campaign Management">Campaign Management</option>
+                                    <option value="Governance & Policy">Governance & Policy</option>
+                                    <option value="Volunteering">Volunteering</option>
+                                    <option value="Partnership">Partnership</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit Request</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Contact Information</h3>
+                        <div class="d-flex mb-4">
+                            <div class="feature-icon me-3">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5">Headquarters</h4>
+                                <p class="mb-0">Public Policy & Governance Society<br>IIT Kharagpur, West Bengal, India - 721302</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <div class="feature-icon me-3">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5">Email</h4>
+                                <p class="mb-0"><a href="mailto:info@buildingbharat.org" class="text-decoration-none">info@buildingbharat.org</a></p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <div class="feature-icon me-3">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5">Phone</h4>
+                                <p class="mb-0">+91 9876543210</p>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <h3 class="h4 mb-4">Follow Us</h3>
+                        <div class="d-flex">
+                            <a href="#" class="me-3 text-decoration-none" target="_blank"><i class="fab fa-twitter fa-2x text-deep-blue"></i></a>
+                            <a href="#" class="me-3 text-decoration-none" target="_blank"><i class="fab fa-facebook fa-2x text-deep-blue"></i></a>
+                            <a href="#" class="me-3 text-decoration-none" target="_blank"><i class="fab fa-instagram fa-2x text-deep-blue"></i></a>
+                            <a href="#" class="me-3 text-decoration-none" target="_blank"><i class="fab fa-linkedin fa-2x text-deep-blue"></i></a>
+                        </div>
+                        <hr class="my-4">
+                        <h3 class="h4 mb-4">Office Hours</h3>
+                        <p><strong>Monday to Friday:</strong> 9:00 AM - 6:00 PM</p>
+                        <p><strong>Saturday:</strong> 10:00 AM - 2:00 PM</p>
+                        <p><strong>Sunday:</strong> Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQs Section -->
+<section class="section section-highlight">
+    <div class="container">
+        <h2 class="section-title text-center">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="accordion" id="accordionFAQ">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                How can I join Building Bharat as a participant?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                You can join Building Bharat by filling out the contact form above, indicating your interest in our leadership development programs. Our team will reach out to you with information about upcoming programs, eligibility criteria, and application processes.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Do I need to have prior political experience to participate?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                No prior political experience is required. Building Bharat programs are designed for both first-time political aspirants and those with some experience. Our focus is on developing your leadership potential and providing you with the skills and knowledge needed for effective political engagement.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Are your programs affiliated with any political party?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Building Bharat is a non-partisan organization. Our programs focus on developing leadership skills, ethical governance practices, and effective campaign strategies that can be applied across political ideologies. We welcome participants from all democratic political backgrounds.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                How can my organization partner with Building Bharat?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                We welcome partnerships with academic institutions, civil society organizations, think tanks, and other entities aligned with our mission. Please contact us through the form above, selecting "Partnership" as your area of interest, and our partnerships team will reach out to discuss collaboration opportunities.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                Are scholarships available for your programs?
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Yes, we offer a limited number of scholarships for deserving candidates who demonstrate exceptional leadership potential. The selection process is competitive and based on merit, need, and commitment to public service. Please indicate your interest in scholarships when applying for our programs.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-4">Ready to Start Your Political Leadership Journey?</h2>
+                <p class="lead mb-4">Join the Building Bharat community and develop your potential as a political leader.</p>
+                <a href="#contactForm" class="btn btn-light btn-lg">Reach Out Today</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Smooth scroll to contact form when "Reach Out Today" button is clicked
+    document.addEventListener('DOMContentLoaded', function() {
+        const reachOutBtn = document.querySelector('a[href="#contactForm"]');
+        if (reachOutBtn) {
+            reachOutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const contactForm = document.getElementById('contactForm');
+                if (contactForm) {
+                    contactForm.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
