@@ -4,19 +4,6 @@
 
 {% block extra_head %}
 <style>
-    .leader-carousel .carousel-item {
-        height: 400px;
-        background-position: center;
-        background-size: cover;
-    }
-    
-    .leader-quote {
-        background-color: rgba(15, 42, 71, 0.8);
-        padding: 20px;
-        border-left: 5px solid #FF9933;
-        max-width: 600px;
-    }
-    
     .course-banner {
         background: linear-gradient(135deg, #0F2A47 0%, #1B4F8F 100%);
         padding: 30px;
@@ -37,74 +24,10 @@
         color: #FF9933;
         margin-bottom: 15px;
     }
-    
-    .carousel-caption {
-        bottom: 40px;
-        left: 10%;
-        right: 10%;
-        text-align: left;
-    }
-    
-    #leader-carousel .carousel-control-prev,
-    #leader-carousel .carousel-control-next {
-        width: 5%;
-    }
-    
-    #leader-carousel .carousel-indicators {
-        bottom: 20px;
-    }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Leader Carousel -->
-<div id="leader-carousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#leader-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#leader-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#leader-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{{ url_for('static', filename='images/parliament.svg') }}" class="d-block w-100" alt="Indian Parliament">
-            <div class="carousel-caption">
-                <div class="leader-quote">
-                    <h2 class="h3">Temple of Democracy</h2>
-                    <p class="lead">"In a democracy, the individual enjoys not only the ultimate power but carries the ultimate responsibility." - Norman Cousins</p>
-                    <a href="{{ url_for('courses_page') }}" class="btn btn-primary mt-2">Prepare for Leadership</a>
-                </div>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='images/vajpayee.svg') }}" class="d-block w-100" alt="Atal Bihari Vajpayee">
-            <div class="carousel-caption">
-                <div class="leader-quote">
-                    <h2 class="h3">Atal Bihari Vajpayee</h2>
-                    <p class="lead">"You can change friends but not neighbors."</p>
-                    <a href="{{ url_for('courses_page') }}" class="btn btn-primary mt-2">Learn Political Strategy</a>
-                </div>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='images/gandhi.svg') }}" class="d-block w-100" alt="Indira Gandhi">
-            <div class="carousel-caption">
-                <div class="leader-quote">
-                    <h2 class="h3">Indira Gandhi</h2>
-                    <p class="lead">"The power to question is the basis of all human progress."</p>
-                    <a href="{{ url_for('courses_page') }}" class="btn btn-primary mt-2">Develop Political Acumen</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#leader-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#leader-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
 
 <!-- Hero Section -->
 <section class="hero">
